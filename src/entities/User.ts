@@ -4,7 +4,7 @@ import { Project } from "./Project";
 export class User {
   readonly id: string;
   name: string;
-  password: number;
+  password: string;
   username: string;
   projects?: Project[];
 

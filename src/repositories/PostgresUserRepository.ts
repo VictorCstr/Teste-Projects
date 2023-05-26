@@ -1,26 +1,39 @@
 import { PrismaClient } from "@prisma/client";
 import { IUserRepository } from "../interfaces/IUserRepository";
 import { User } from "../entities/User";
+import bcrypt from "bcrypt";
 
 const prisma = new PrismaClient();
 
 export class PostgresUserRepository implements IUserRepository {
   constructor() {}
 
-  async create(
-    name: string,
-    username: string,
-    password: string
-  ): Promise<Partial<User>> {
+  async create(user: User): Promise<User> {
     try {
-      throw new Error("Method not implemented yet");
-    } catch (error) {
-      console.error({
-        action: "save",
-        message: "error trying to save transaction on postgres",
-        data: error,
+      const { id, name, password, username } = user;
+      const passHash = await bcrypt.hash(password, 10);
+      return await prisma.user.create({
+        data: {
+          id,
+          name,
+          password: passHash,
+          username,
+        },
       });
-      throw new Error("failed to save transaction on postgres");
+    } catch (error) {
+      throw new Error("failed to save user on postgres");
+    }
+  }
+  async existUser(username: string): Promise<Boolean> {
+    try {
+      const user = await prisma.user.findUnique({
+        where: {
+          username,
+        },
+      });
+      return user ? true : false;
+    } catch (error) {
+      throw new Error("failed to find user on postgres");
     }
   }
 }
