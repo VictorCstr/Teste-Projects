@@ -1,7 +1,14 @@
-import express from 'express'
+import express from "express";
+import routes from "./routes/ProjectRouter";
 
-const app = express()
+const port = process.env.PORT || 8080;
+const app = express();
 
-app.use(express.json())
+app.set("view engine", "ejs");
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+app.use(routes);
 
-export { app }
+app.listen(port, () => {
+  console.log(`Aplicação rodando na porta: ${port}`);
+});
