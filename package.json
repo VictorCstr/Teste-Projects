@@ -1,12 +1,14 @@
 {
-  "name": "Teste-FontesPromotora",
+  "name": "teste_fontespromotora",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "app.js",
   "scripts": {
+    "start": "NODE_PATH=./build node build/app.js",
+    "build": "tsc -p .",
+    "prisma": "npx prisma generate",
     "dev": "tsnd --respawn --transpile-only src/app.ts",
-    "start": "node ./src/server.js",
-    "preview": "node ./build/src/server.js"
+    "test": "jest"
   },
   "keywords": [],
   "author": "",

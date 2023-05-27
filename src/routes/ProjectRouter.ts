@@ -6,12 +6,18 @@ import { getOneProjectUseCase } from "../useCases/project/getOneProjectUseCase/i
 import { completeProjectUseCase } from "../useCases/project/completeProjectUseCase/index";
 import { deleteProjectUseCase } from "../useCases/project/deleteProjectUseCase/index";
 import { updateProjectUseCase } from "../useCases/project/updateProjectUseCase/index";
+import { ApiError } from "../errors";
 
 const routes = express.Router();
 
 routes.post("/user", async (req: Request, res: Response) => {
   try {
     const { username, name, password } = req.body;
+
+    if (!username || !name || !password) {
+      throw new ApiError(400, "Estão faltando dados para concluir a chamada");
+    }
+
     const user = await createUserUseCase.execute({ name, username, password });
     return res.status(201).json(user);
   } catch (err) {
@@ -23,6 +29,8 @@ routes.post("/project", async (req: Request, res: Response) => {
   try {
     const username = req.headers.username as string;
     const { cost, deadline, title, zipCode } = req.body;
+    if (!username || !cost || !deadline || !title || !zipCode)
+      throw new ApiError(400, "Estão faltando dados para concluir a chamada");
     const user = await createProjectUseCase.execute({
       title,
       username,
@@ -41,6 +49,9 @@ routes.get("/projects", async (req: Request, res: Response) => {
   try {
     const username = req.headers.username as string;
 
+    if (!username)
+      throw new ApiError(400, "Estão faltando dados para concluir a chamada");
+
     const projects = await getAllProjectUseCase.execute({
       username,
     });
@@ -54,6 +65,8 @@ routes.get("/projects", async (req: Request, res: Response) => {
 routes.get("/project/:id", async (req: Request, res: Response) => {
   try {
     let projectId = req.params.id;
+
+    if (!projectId) throw new ApiError(400, "Faltando o id do Projeto");
 
     const project = await getOneProjectUseCase.execute({
       projectId,
@@ -70,6 +83,9 @@ routes.put("/projects/:id", async (req: Request, res: Response) => {
     let projectId = req.params.id;
     const username = req.headers.username as string;
     const { title, zipCode, deadline, cost } = req.body;
+
+    if (!projectId || !username || !cost || !deadline || !title || !zipCode)
+      throw new ApiError(400, "Estão faltando dados para concluir a chamada");
 
     const project = await updateProjectUseCase.execute({
       projectId,
@@ -91,6 +107,9 @@ routes.patch("/projects/:id/done", async (req: Request, res: Response) => {
     let projectId = req.params.id;
     const username = req.headers.username as string;
 
+    if (!username || !projectId)
+      throw new ApiError(400, "Estão faltando dados para concluir a chamada");
+
     const project = await completeProjectUseCase.execute({
       projectId,
       username,
@@ -106,6 +125,9 @@ routes.delete("/projects/:id", async (req: Request, res: Response) => {
   try {
     let projectId = req.params.id;
     const username = req.headers.username as string;
+
+    if (!username || !projectId)
+      throw new ApiError(400, "Estão faltando dados para concluir a chamada");
 
     const project = await deleteProjectUseCase.execute({
       projectId,

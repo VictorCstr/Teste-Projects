@@ -2,6 +2,7 @@ import { PrismaClient } from "@prisma/client";
 import { IProjectRepository } from "../interfaces/IProjectRepository";
 import { Project } from "../entities/Project";
 import Axios from "axios";
+import { ApiError } from "../errors";
 
 const prisma = new PrismaClient();
 
@@ -47,11 +48,13 @@ export class PostgresProjectRepository implements IProjectRepository {
         },
       })) as Project;
 
-      const { data } = await Axios.get(
-        `https://viacep.com.br/ws/${project?.zipCode}/json/`
-      );
+      if (project) {
+        const { data } = await Axios.get(
+          `https://viacep.com.br/ws/${project?.zipCode}/json/`
+        );
 
-      project.zipCode = `${data.localidade}/${data.uf}`;
+        project.zipCode = `${data.localidade}/${data.uf}`;
+      }
 
       return project as Project;
     } catch (error) {
