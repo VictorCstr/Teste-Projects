@@ -60,20 +60,27 @@ export class PostgresProjectRepository implements IProjectRepository {
     }
   }
   async updateProject(
-    username: string,
+    projectId: string,
     title: string,
     zipCode: string,
+    cost: number,
     deadline: Date
   ): Promise<Project> {
     try {
-      throw new Error("Method not implemented yet");
-    } catch (error) {
-      console.error({
-        action: "save",
-        message: "error trying to save transaction on postgres",
-        data: error,
+      return await prisma.project.update({
+        where: {
+          id: projectId,
+        },
+        data: {
+          title,
+          zipCode,
+          deadline,
+          cost,
+        },
       });
-      throw new Error("failed to save transaction on postgres");
+    } catch (error) {
+      console.log(error);
+      throw new Error("failed to update a project on postgres");
     }
   }
   async completeProject(username: string, projectId: string): Promise<Project> {

@@ -5,6 +5,7 @@ import { getAllProjectUseCase } from "../useCases/project/getAllProjectsUseCase/
 import { getOneProjectUseCase } from "../useCases/project/getOneProjectUseCase/index";
 import { completeProjectUseCase } from "../useCases/project/completeProjectUseCase/index";
 import { deleteProjectUseCase } from "../useCases/project/deleteProjectUseCase/index";
+import { updateProjectUseCase } from "../useCases/project/updateProjectUseCase/index";
 
 const routes = express.Router();
 
@@ -56,6 +57,27 @@ routes.get("/project/:id", async (req: Request, res: Response) => {
 
     const project = await getOneProjectUseCase.execute({
       projectId,
+    });
+    return res.status(201).json(project);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ message: err || "Unexpected Error" });
+  }
+});
+
+routes.put("/projects/:id", async (req: Request, res: Response) => {
+  try {
+    let projectId = req.params.id;
+    const username = req.headers.username as string;
+    const { title, zipCode, deadline, cost } = req.body;
+
+    const project = await updateProjectUseCase.execute({
+      projectId,
+      username,
+      title,
+      zipCode,
+      deadline,
+      cost,
     });
     return res.status(201).json(project);
   } catch (err) {

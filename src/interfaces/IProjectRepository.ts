@@ -5,9 +5,10 @@ export interface IProjectRepository {
   getAll(username: string): Promise<Project[]>;
   getOne(projectId: string): Promise<Project>;
   updateProject(
-    username: string,
+    projectId: string,
     title: string,
     zipCode: string,
+    cost: number,
     deadline: Date
   ): Promise<Project>;
   completeProject(username: string, projectId: string): Promise<Project>;
