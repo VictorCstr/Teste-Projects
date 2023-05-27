@@ -1,13 +1,7 @@
 import { Project } from "../entities/Project";
 
 export interface IProjectRepository {
-  create(
-    username: string,
-    title: string,
-    zipCode: string,
-    deadline: Date,
-    cost: string
-  ): Promise<void>;
+  create(project: Project): Promise<Project>;
   getAll(username: string): Promise<Project[]>;
   getOne(projectId: string): Promise<Project>;
   updateProject(

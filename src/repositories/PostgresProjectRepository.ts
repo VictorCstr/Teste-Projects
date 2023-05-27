@@ -7,22 +7,21 @@ const prisma = new PrismaClient();
 export class PostgresProjectRepository implements IProjectRepository {
   constructor() {}
 
-  async create(
-    username: string,
-    title: string,
-    zipCode: string,
-    deadline: Date,
-    cost: string
-  ): Promise<void> {
+  async create(project: Project): Promise<Project> {
     try {
-      throw new Error("Method not implemented yet");
-    } catch (error) {
-      console.error({
-        action: "save",
-        message: "error trying to save transaction on postgres",
-        data: error,
+      const { id, cost, deadline, title, username, zipCode } = project;
+      return await prisma.project.create({
+        data: {
+          id,
+          title,
+          username,
+          zipCode,
+          deadline,
+          cost,
+        },
       });
-      throw new Error("failed to save transaction on postgres");
+    } catch (error) {
+      throw new Error("failed to save a new project on postgres");
     }
   }
   async getAll(username: string): Promise<Project[]> {

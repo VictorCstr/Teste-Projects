@@ -24,8 +24,8 @@ model Project {
   id        String   @id
   title     String
   zipCode   String
-  cost      String   @unique
-  done      Boolean
+  cost      Float
+  done      Boolean  @default(false)
   deadline  DateTime
   username  String
   createdAt DateTime @default(now())

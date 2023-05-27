@@ -5,12 +5,12 @@ export class Project {
   readonly id: string;
   title: string;
   zipCode: string;
-  cost: string;
-  done: Boolean;
+  cost: number;
+  done?: Boolean;
   deadline: Date;
-  username: User;
-  createdAt: Date;
-  updatedAt: Date;
+  username: string;
+  createdAt?: Date;
+  updatedAt?: Date;
 
   constructor(props: Omit<Project, "id">, id?: string) {
     Object.assign(this, props);

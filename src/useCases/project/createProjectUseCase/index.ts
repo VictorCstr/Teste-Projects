@@ -1,10 +1,15 @@
 import { PostgresProjectRepository } from "../../../repositories/PostgresProjectRepository";
-import { GetOneProjectUseCase } from "./getOneProjectUseCase";
+import { PostgresUserRepository } from "../../../repositories/PostgresUserRepository";
+import { CreateProjectUseCase } from "./createProjectUseCase";
 
 //Repo
 const projectRepository = new PostgresProjectRepository();
+const userRepository = new PostgresUserRepository();
 
 //Inicializa o useCase
-const getOneProjectUseCase = new GetOneProjectUseCase(projectRepository);
+const createProjectUseCase = new CreateProjectUseCase(
+  projectRepository,
+  userRepository
+);
 
-export { getOneProjectUseCase };
+export { createProjectUseCase };
