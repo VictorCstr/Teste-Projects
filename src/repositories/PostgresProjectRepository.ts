@@ -26,14 +26,16 @@ export class PostgresProjectRepository implements IProjectRepository {
   }
   async getAll(username: string): Promise<Project[]> {
     try {
-      throw new Error("Method not implemented yet");
-    } catch (error) {
-      console.error({
-        action: "save",
-        message: "error trying to save transaction on postgres",
-        data: error,
+      return await prisma.project.findMany({
+        where: {
+          username,
+        },
       });
-      throw new Error("failed to save transaction on postgres");
+    } catch (error) {
+      console.log(error);
+      throw new Error(
+        "failed searching all projects from an user on on postgres"
+      );
     }
   }
   async getOne(projectId: string): Promise<Project> {
