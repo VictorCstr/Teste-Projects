@@ -12,4 +12,5 @@ export interface IProjectRepository {
   ): Promise<Project>;
   completeProject(username: string, projectId: string): Promise<Project>;
   delete(username: string, projectId: string): Promise<Project>;
+  isProjectOwner(username: string, projectId: string): Promise<Boolean>;
 }
