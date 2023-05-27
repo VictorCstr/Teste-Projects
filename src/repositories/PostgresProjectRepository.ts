@@ -107,9 +107,13 @@ export class PostgresProjectRepository implements IProjectRepository {
       );
     }
   }
-  async delete(username: string, projectId: string): Promise<Project> {
+  async delete(projectId: string): Promise<Project> {
     try {
-      throw new Error("Method not implemented yet");
+      return await prisma.project.delete({
+        where: {
+          id: projectId,
+        },
+      });
     } catch (error) {
       console.error({
         action: "save",

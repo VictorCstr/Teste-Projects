@@ -4,6 +4,7 @@ import { createProjectUseCase } from "../useCases/project/createProjectUseCase/i
 import { getAllProjectUseCase } from "../useCases/project/getAllProjectsUseCase/index";
 import { getOneProjectUseCase } from "../useCases/project/getOneProjectUseCase/index";
 import { completeProjectUseCase } from "../useCases/project/completeProjectUseCase/index";
+import { deleteProjectUseCase } from "../useCases/project/deleteProjectUseCase/index";
 
 const routes = express.Router();
 
@@ -69,6 +70,22 @@ routes.patch("/projects/:id/done", async (req: Request, res: Response) => {
     const username = req.headers.username as string;
 
     const project = await completeProjectUseCase.execute({
+      projectId,
+      username,
+    });
+    return res.status(201).json(project);
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json({ message: err || "Unexpected Error" });
+  }
+});
+
+routes.delete("/projects/:id", async (req: Request, res: Response) => {
+  try {
+    let projectId = req.params.id;
+    const username = req.headers.username as string;
+
+    const project = await deleteProjectUseCase.execute({
       projectId,
       username,
     });
