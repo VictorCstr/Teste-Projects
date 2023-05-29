@@ -4,11 +4,6 @@
  <a href="#mag_right-para-rodar-o-projeto">Como rodar</a> • 
 </p>
 
-<h1 align="center">Desafio #2 (TRIO)</h1> <br><br>
-<p align="center"> 
-  <img src="https://github.com/VictorCstr/desafioCRUDjs-gama/blob/main/public/images/smartmockups_kxgp62ci.jpg" width="100%">
-</p>
-
 ## :computer: O projeto
 
 - Administração de Projetos, com tela de login e criação de usuario, com redirecionamento para uma tela com um CRUD de projetos, podendo atualizar, marcar como concluido, excluir, criar novos projetos e visualizar separadamente com uma visualização de cidade e estado através do código postal.
