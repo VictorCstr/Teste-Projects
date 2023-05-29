@@ -34,6 +34,25 @@ $ git clone <https://github.com/VictorCstr/Teste-Projects>
 # Acesse a pasta do projeto no terminal
 $ cd Teste-Projects
 
+# Criar as variaveis para o container
+Postgres => db.env FILE
+Exemplos: 
+$ POSTGRES_USER:postgres
+$ POSTGRES_PASSWORD:admin
+$ POSTGRES_DB:Fontes
+
+REDIS => cache.env FILE
+Exemplos: 
+$ REDIS_URL="redis://host.docker.internal:6379"
+$ ALLOW_EMPTY_PASSWORD=yes
+
+API => .env FILE
+Exemplos: 
+$ NODE_ENV=dev
+$ SECRET_KEY="paodequeijo"
+$ DATABASE_URL="postgresql://postgres:admin@host.docker.internal:5432/Fontes"
+$ REDIS_URL="redis://host.docker.internal:6379"
+
 # Faça a instalação e execução de todos os containers com o compose
 $ docker-compose up --build
 
