@@ -1,6 +1,6 @@
 <p align="center">
  <a href="#computer-o-projeto">Sobre</a> •
- <a href="#dart-objetivo">Objetivo</a> • 
+ <a href="#computer-tecnologias">Tecnologias usadas</a> • 
  <a href="#mag_right-para-rodar-o-projeto">Como rodar</a> • 
 </p>
 
