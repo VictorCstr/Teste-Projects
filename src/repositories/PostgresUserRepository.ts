@@ -3,7 +3,8 @@ import { IUserRepository } from "../interfaces/IUserRepository";
 import { User } from "../entities/User";
 import bcrypt from "bcrypt";
 import { CacheProvider } from "../providers/CacheProvider";
-import { userInfo } from "os";
+import jwt from "jsonwebtoken";
+import { ApiError } from "../errors";
 
 const prisma = new PrismaClient();
 
@@ -27,7 +28,7 @@ export class PostgresUserRepository implements IUserRepository {
         },
       });
 
-      await this.cache.set({ key: username, value: "", ttl: 120 });
+      await this.cache.set(username, "username");
 
       return userCreated;
     } catch (error) {
@@ -40,14 +41,36 @@ export class PostgresUserRepository implements IUserRepository {
 
       if (existInCache != null) return true;
 
+      const user = await prisma.user.findFirst({
+        where: {
+          username: username,
+        },
+      });
+      return user ? true : false;
+    } catch (error) {
+      console.log(error);
+      throw new Error("failed to find user on postgres");
+    }
+  }
+  async login(username: string, password: string): Promise<string> {
+    try {
       const user = await prisma.user.findUnique({
         where: {
           username,
         },
       });
-      return user ? true : false;
+
+      if (!user) {
+        throw new ApiError(400, "Usuário não está cadastrado!");
+      }
+
+      if (await !bcrypt.compareSync(password, user.password)) {
+        throw new ApiError(401, "Não autorizado!");
+      }
+      await this.cache.set(username, "username");
+      return user.id;
     } catch (error) {
-      throw new Error("failed to find user on postgres");
+      throw new Error("failed to login on postgres");
     }
   }
 }

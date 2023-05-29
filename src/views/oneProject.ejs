@@ -1,0 +1,68 @@
+<%- include ('./partials/header') -%>
+<nav class="navbar navbar-dark navbar-expand-lg bg-success">
+  <a href="/" class="navbar-brand"> Administração de Projetos </a>
+  <button
+    class="navbar-toggler ml-auto"
+    data-toggle="collapse"
+    data-target="#nav-target"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="nav-target">
+    <ul class="navbar-nav my-2 mr-auto" id="nav-target"></ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item ml-5">
+        <button
+          type="submit"
+          class="btn btn-primary"
+          onclick="window.history.back()"
+        >
+          Retornar a todos os Projetos
+        </button>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+  <h2 class="my-5">Projeto</h2>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover">
+      <thead class="thead-dark">
+        <tr class="">
+          <th scope="col" class="align-middle py-5">ID</th>
+          <th scope="col" class="align-middle">Título</th>
+          <th scope="col" class="align-middle">Código Postal</th>
+          <th scope="col" class="align-middle">Custo</th>
+          <th scope="col" class="align-middle">Concluído</th>
+          <th scope="col" class="align-middle">Prazo Final</th>
+          <th scope="col" class="align-middle">Usuário dono</th>
+          <th scope="col" class="align-middle">Criado em:</th>
+          <th scope="col" class="align-middle">Atualizado em:</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="align-bottom">
+          <th scope="col" class="align-middle"><%= project.id %></th>
+          <th scope="col" class="align-middle"><%= project.title%></th>
+          <th scope="col" class="align-middle"><%= project.zipCode %></th>
+          <th scope="col" class="align-middle"><%= project.cost %></th>
+          <th scope="col" class="align-middle">
+            <%= project.done == true ? "Sim": "Não" %>
+          </th>
+          <th scope="col" class="align-middle">
+            <%= project.deadline.toLocaleDateString("pt-BR") %>
+          </th>
+          <th scope="col" class="align-middle"><%= project.username %></th>
+          <th scope="col" class="align-middle">
+            <%= project.createdAt.toLocaleDateString("pt-BR") %>
+          </th>
+          <th scope="col" class="align-middle py-5">
+            <%= project.updatedAt.toLocaleDateString("pt-BR") %>
+          </th>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+<%- include ('./partials/footer') -%>

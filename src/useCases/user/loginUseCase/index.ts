@@ -1,6 +1,6 @@
 import { CacheProvider } from "../../../providers/CacheProvider";
 import { PostgresUserRepository } from "../../../repositories/PostgresUserRepository";
-import { CreateUserUseCase } from "./createUserUseCase";
+import { LoginUseCase } from "./loginUseCase";
 
 //Provider
 const cacheProvider = new CacheProvider();
@@ -9,6 +9,6 @@ const cacheProvider = new CacheProvider();
 const userRepository = new PostgresUserRepository(cacheProvider);
 
 //Inicializa o useCase
-const createUserUseCase = new CreateUserUseCase(userRepository);
+const loginUseCase = new LoginUseCase(userRepository);
 
-export { createUserUseCase };
+export { loginUseCase };

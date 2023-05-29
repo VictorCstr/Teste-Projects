@@ -2,6 +2,7 @@ import { Project } from "../entities/Project";
 
 export interface IProjectRepository {
   create(project: Project): Promise<Project>;
+  validZipCode(zipCode): Promise<string>;
   getAll(username: string): Promise<Project[]>;
   getOne(projectId: string): Promise<Project>;
   updateProject(

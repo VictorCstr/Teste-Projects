@@ -11,6 +11,12 @@ export class GetOneProjectUseCase {
 
     const existProject = await this.projectRepository.getOne(projectId);
 
+    const zipCode = await this.projectRepository.validZipCode(
+      existProject.zipCode
+    );
+
+    existProject.zipCode = zipCode;
+
     if (!existProject) throw new ApiError(400, "Projeto não localizado!");
 
     return existProject;

@@ -13,11 +13,11 @@ export class GetAllProjectUseCase {
   async execute(data: IGetAllProjectsDTO): Promise<Project[]> {
     const { username } = data;
 
-    const existUser = await this.userRepository.existUser(username);
+    // const existUser = await this.userRepository.existUser(username);
 
-    if (existUser == false) {
-      throw new ApiError(400, "O usuario informado não existe");
-    }
+    // if (existUser == false) {
+    //   throw new ApiError(400, "O usuario informado não existe");
+    // }
 
     return await this.projectRepository.getAll(username);
   }

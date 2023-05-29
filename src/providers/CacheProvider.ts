@@ -14,6 +14,7 @@ export class CacheProvider {
   async initialize(url: string) {
     this._client = createClient({
       url,
+      legacyMode: true,
     });
 
     this._client.on("error", (err) => console.error("Redis Client Error", err));
@@ -22,13 +23,13 @@ export class CacheProvider {
     await this._client.connect();
   }
 
-  async get(key): Promise<any> {
-    return await this._client.get(key);
+  async get(key: any): Promise<any> {
+    const keyReceived = await this._client.get(key);
+    console.log(keyReceived);
+    return keyReceived;
   }
 
-  async set({ key, value, ttl }: { key: string; value: any; ttl?: number }) {
+  async set(key: string, value: string): Promise<void> {
     this._client.set(key, value);
-
-    if (ttl) this._client.expire(key, ttl);
   }
 }

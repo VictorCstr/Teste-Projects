@@ -11,7 +11,9 @@ export class PostgresProjectRepository implements IProjectRepository {
 
   async create(project: Project): Promise<Project> {
     try {
-      const { id, cost, deadline, title, username, zipCode } = project;
+      let { id, cost, deadline, title, username, zipCode } = project;
+      deadline = new Date(deadline);
+      cost = parseFloat(cost as any);
       return await prisma.project.create({
         data: {
           id,
@@ -23,6 +25,7 @@ export class PostgresProjectRepository implements IProjectRepository {
         },
       });
     } catch (error) {
+      console.log(error);
       throw new Error("failed to save a new project on postgres");
     }
   }
@@ -42,24 +45,26 @@ export class PostgresProjectRepository implements IProjectRepository {
   }
   async getOne(projectId: string): Promise<Project> {
     try {
-      const project = (await prisma.project.findUnique({
+      return await prisma.project.findUnique({
         where: {
           id: projectId,
         },
-      })) as Project;
-
-      if (project) {
-        const { data } = await Axios.get(
-          `https://viacep.com.br/ws/${project?.zipCode}/json/`
-        );
-
-        project.zipCode = `${data.localidade}/${data.uf}`;
-      }
-
-      return project as Project;
+      });
     } catch (error) {
       console.log(error);
       throw new Error("failed searching a project on postgres");
+    }
+  }
+  async validZipCode(zipCode: any): Promise<string> {
+    try {
+      const { data } = await Axios.get(
+        `https://viacep.com.br/ws/${zipCode}/json/`
+      );
+
+      return `${data.localidade}/${data.uf}`;
+    } catch (error) {
+      console.log(error);
+      throw new Error("failed searching if zip code is valid");
     }
   }
   async updateProject(
@@ -70,6 +75,8 @@ export class PostgresProjectRepository implements IProjectRepository {
     deadline: Date
   ): Promise<Project> {
     try {
+      deadline = new Date(deadline);
+      cost = parseFloat(cost as any);
       return await prisma.project.update({
         where: {
           id: projectId,
@@ -125,12 +132,8 @@ export class PostgresProjectRepository implements IProjectRepository {
         },
       });
     } catch (error) {
-      console.error({
-        action: "save",
-        message: "error trying to save transaction on postgres",
-        data: error,
-      });
-      throw new Error("failed to save transaction on postgres");
+      console.log(error);
+      throw new Error("failed trying to delete a project on postgres");
     }
   }
 }

@@ -1,0 +1,233 @@
+<%- include ('./partials/header') -%> <%- include ('./partials/navbar') -%>
+<div class="container">
+  <h2 class="my-5">Projetos</h2>
+  <button
+    data-toggle="modal"
+    data-target="#cadastroModal"
+    class="btn btn-primary mb-5"
+  >
+    Criar um novo Projeto
+  </button>
+
+  <div class="modal" tabindex="-1" id="cadastroModal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Cadastro de Projetos</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <form method="post" action="/project">
+          <div class="modal-body">
+            <div class="form-group">
+              <input
+                type="text"
+                name="title"
+                class="form-control"
+                placeholder="Nome do Projeto *"
+                value=""
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="number"
+                name="cost"
+                class="form-control"
+                placeholder="Custo do Projeto *"
+                value=""
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="number"
+                name="zipCode"
+                class="form-control"
+                placeholder="Código Postal *"
+                value=""
+              />
+            </div>
+            <div class="form-group">
+              <input
+                type="datetime-local"
+                name="deadline"
+                class="form-control"
+                placeholder="Prazo Final *"
+                value=""
+              />
+              <input type="hidden" name="username" value="<%= username %>" />
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Cancelar
+            </button>
+            <button type="submit" class="btn btn-primary">
+              Cadastrar Projeto
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-bordered table-hover table-sm">
+      <thead class="thead-dark">
+        <tr class="">
+          <th scope="col" class="align-middle py-5">ID</th>
+          <th scope="col" class="align-middle">Título</th>
+          <th scope="col" class="align-middle">Código Postal</th>
+          <th scope="col" class="align-middle">Custo</th>
+          <th scope="col" class="align-middle">Concluído</th>
+          <th scope="col" class="align-middle">Prazo Final</th>
+          <th scope="col" class="align-middle">Usuário dono</th>
+          <th scope="col" class="align-middle">Criado em:</th>
+          <th scope="col" class="align-middle">Atualizado em:</th>
+          <th scope="col" class="align-middle">Opções</th>
+        </tr>
+      </thead>
+      <% projects.forEach( project => { %>
+      <div class="modal" tabindex="-1" id="updateModal">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Atualização de Projetos</h5>
+              <button
+                type="button"
+                class="close"
+                data-dismiss="modal"
+                aria-label="Close"
+              >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <form method="post" action="/projects/<%=project.id%>">
+              <div class="modal-body">
+                <div class="form-group">
+                  <input
+                    type="text"
+                    name="title"
+                    class="form-control"
+                    placeholder="Nome do Projeto *"
+                    value="<%= project.title%>"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    type="number"
+                    name="cost"
+                    class="form-control"
+                    placeholder="Custo do Projeto *"
+                    value="<%= project.cost%>"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    type="number"
+                    name="zipCode"
+                    class="form-control"
+                    placeholder="Código Postal *"
+                    value="<%= project.zipCode%>"
+                  />
+                </div>
+                <div class="form-group">
+                  <input
+                    type="datetime"
+                    name="deadline"
+                    class="form-control"
+                    placeholder="Prazo Final *"
+                    value="<%= project.deadline%>"
+                  />
+                  <input
+                    type="hidden"
+                    name="username"
+                    value="<%= username %>"
+                  />
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  data-dismiss="modal"
+                >
+                  Cancelar
+                </button>
+                <button type="submit" class="btn btn-primary">
+                  Atualizar Projeto
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <tbody>
+        <th scope="col" class="align-middle py-5"><%= project.id %></th>
+        <th scope="col" class="align-middle"><%= project.title%></th>
+        <th scope="col" class="align-middle"><%= project.zipCode %></th>
+        <th scope="col" class="align-middle"><%= project.cost %></th>
+        <th scope="col" class="align-middle">
+          <%= project.done == true ? "Sim": "Não" %>
+        </th>
+        <th scope="col" class="align-middle">
+          <%= project.deadline.toLocaleDateString("pt-BR") %>
+        </th>
+        <th scope="col" class="align-middle"><%= project.username %></th>
+        <th scope="col" class="align-middle">
+          <%= project.createdAt.toLocaleDateString("pt-BR") %>
+        </th>
+        <th scope="col" class="align-middle">
+          <%= project.updatedAt.toLocaleDateString("pt-BR") %>
+        </th>
+        <th scope="col" class="form-group d-flex flex-column">
+          <form action="/project/<%=project.id%>" method="get">
+            <button type="submit" class="btn btn-outline-info btn-sm mb-1 mt-3">
+              Visualizar
+            </button>
+          </form>
+          <form
+            action="/projects/<%=project.id%>/done"
+            method="post"
+            onsubmit="confirmComplete(event,this)"
+          >
+            <input type="hidden" name="username" value="<%=username%>" />
+            <button type="submit" class="btn btn-outline-success btn-sm mb-1">
+              Completar
+            </button>
+          </form>
+          <button
+            type="submit"
+            class="btn btn-outline-warning btn-sm mb-1"
+            data-toggle="modal"
+            data-target="#updateModal"
+          >
+            Alterar
+          </button>
+          <form
+            action="/projects/<%=project.id%>/delete"
+            method="post"
+            onsubmit="confirmDelete(event,this)"
+            class="form-group d-flex flex-column justify-content-center"
+          >
+            <input type="hidden" name="username" value="<%= username %>" />
+            <button type="submit" class="btn btn-outline-danger btn-sm mb-1">
+              Deletar
+            </button>
+          </form>
+        </th>
+      </tbody>
+      <% }) %>
+    </table>
+  </div>
+</div>
+<%- include ('./partials/footer') -%>
